@@ -1,35 +1,63 @@
 #include "main.h"
+#include <stdio.h>
+
 /**
- *cap_string - capitalizes every first letter of a word in a string.
- *separators of words are:  space, tabulation,
- * new line, (, ), {, and }.
- *@s: pointer to string.
+ * isLower - Determines whether ascii is lowercase
  *
- *Return: pointer to s.
+ * @c: Character
+ *
+ * Return: 1 if true, 0 if false
  */
+
+int isLower(char c)
+{
+return (c >= 97 && c <= 122);
+}
+
+/**
+ * isDelimiter - Determines whether ascii is a delimiter
+ *
+ * @c: Character
+ *
+ * Return: 1 if true, 0 if false
+ */
+
+int isDelimiter(char c)
+{
+int i;
+char delimiter[] = " \t\n,.!?\"(){}";
+
+for (i = 0; i < 12; i++)
+if (c == delimiter[i])
+return (1);
+
+return (0);
+}
+
+/**
+ * cap_string - Capitalizes all words of a string
+ *
+ * @s: Input string
+ *
+ * Return: string with capitalized words
+ */
+
 char *cap_string(char *s)
 {
-int count;
+char *ptr = s;
+int foundDelimit = 1;
 
-/*  scan through string */
-count = 0;
-while (s[count] != '\0')
-{/* if next character after count is a char , capitalise it */
-if (s[0] >= 97 && s[0] <= 122)
+while (*s)
 {
-s[0] = s[0] - 32;
-																	}
-if (s[count] == ' ' || s[count] == '\t' || s[count] == '\n'
-|| s[count] == ',' || s[count] == ';' || s[count] == '.'
-																	    		    || s[count] == '.' || s[count] == '!' || s[count] == '?'
-																	    		    || s[count] == '"' || s[count] == '(' || s[count] == ')'
-																	    		    || s[count] == '{' || s[count] == '}')
+if (isDelimiter(*s))
+foundDelimit = 1;
+else if (isLower(*s) && foundDelimit)
 {
-																	if (s[count + 1] >= 97 && s[count + 1] <= 122)
-																	{
-																	s[count + 1] = s[count + 1] - 32;
+																	*s -= 32;
+																	foundDelimit = 0;
 																	}
-																	}
-count++;
-}
-return (s);
+else
+																	foundDelimit = 0;
+s++;
+																}
+return (ptr);
